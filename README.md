@@ -118,3 +118,47 @@ void Update() {
     EndDraw(mainWindow);
 }
 ```
+## Нажатие клавиш
+Чтобы отслеживать нажатие клавиш клавиатуры или кнопок мыши, используется несколько простых функций.
+
+```bool GetKeyDown(int KeyCode);``` - возвращает true, если клавиша была **нажата один раз**.  
+```bool GetKey(int KeyCode);``` - возвращает true, если клавиша **зажата в данный момент**.  
+```bool GetKeyUp(int KeyCode);``` - возвращает true, если клавиша **была отпущена после зажатия**.  
+
+Список кодов клавиш достаточно простой.
+* Коды клавиш букв и цифр сделаны по образцу - **Key[название]**. Например ```KeyW``` или ```Key1```.
+* У кнопок мыши всего два кода - ```LeftMouse``` и ```LeftMouse```.
+* Остальные коды сделаны по образцу - **Key[название клавиши заглавными буквами]**. Например ```KeyLSHIFT``` или ```KeySPACE```.
+
+**Пример полного кода:**
+```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 0, 0, 1600, 900};
+
+square player = {500, 500, 50, 50, 0, red, "Player", true};
+
+void Update();
+
+Start() {
+    MakeWindow(mainWindow);
+    DisplayWindow(Update);
+}
+
+void Update() {
+    if (GetKey(KeySPACE)) {
+        player.color = blue;
+    }
+
+    if (GetKeyUp(KeySPACE)) {
+        player.color = red;
+    }
+
+    BeginDraw(mainWindow);
+
+    PaintWindow(mainWindow, white);
+    DrawSquare(mainWindow, player);
+
+    EndDraw(mainWindow);
+}
+```
