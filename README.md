@@ -260,7 +260,7 @@ void Update() {
 
 window mainWindow = {normal, "Game", 0, 0, 1600, 900};
 
-sound music = {"AcesHigh.wav", "Track1"};
+sound music = {"AcesHigh.mp3", "Track1"};
 
 void Update();
 
