@@ -455,7 +455,7 @@ void Update() {
 * **color** - цвет текста.
 * **fontPath** - путь к файлу с пользовательским шрифтом. **Не используйте пробелы и не латинские буквы!**
 * **fontName** - точное имя пользовательского шрифта.
-* **Если хотите использовать стандартный шрифт(Arial), то не заполняйте fontPath и fontName.**
+* **Если хотите использовать стандартный шрифт(Arial), то не заполняйте параметры fontPath и fontName.**
 * **active** - активен ли текст. При значении false текст не будет отрисовываться в окне.
 * **Примечание: по умолчанию библиотека ищет шрифты в папке с .exe файлом вашего проекта.**
 
@@ -659,3 +659,52 @@ void Update() {
 }
 ```
 **Примечание: в данном примере используется пользовательский шрифт PT Mono.**
+## Поля ввода
+Поле ввода является также нестандартным объектом в ShashkaCreator, так как полностью состоит из других объектов. Давайте создадим такое.
+
+```inputfield [имя поля ввода] = {square box, text label, std::string content, int maxChars, bool isFocused};```
+* **box** - примитив, который будет телом для поля ввода.
+* **label** - текст внутри поля ввода.
+* **content** - символы из текста + каретка. **Этот параметр заполнять не обязательно.**
+* **maxChars** - максимальное количество символов, которое можно записать в поле ввода.
+* **isFouced** - взаимодействует ли сейчас пользователь с полем ввода. **Этот параметр заполнять не нужно.**
+
+Для работы с полями ввода используется несколько простых функций.
+
+```void UpdateInputfield(window &update, inputfield &object);``` - обрабатывает взаимодействия с заданным полем ввода в заданном окне.  
+```void DrawInputfield(window &update, inputfield &object);``` - рисует заданное поле ввода в заданном окне.
+
+**Пример полного кода:**
+```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 0, 0, 1600, 900};
+
+square box = {500, 500, 250, 50, 0, red, "Button", true};
+text inputText;
+
+inputfield testField = {box, inputText, "", 19};
+
+void Update();
+
+Start() {
+    MakeWindow(mainWindow);
+
+    testField.label.size = 25;
+    testField.label.color = white;
+    testField.label.active = true;
+
+    DisplayWindow(Update);
+}
+
+void Update() {
+    UpdateInputfield(mainWindow, testField);
+
+    BeginDraw(mainWindow);
+
+    PaintWindow(mainWindow, white);
+    DrawInputfield(mainWindow, testField);
+
+    EndDraw(mainWindow);
+}
+```
