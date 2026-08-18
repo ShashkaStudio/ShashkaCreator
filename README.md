@@ -489,7 +489,7 @@ void Update() {
     EndDraw(mainWindow);
 }
 ```
-**Примечание: в этом примере используется пользовательский шрифт PT Mono.**
+**Примечание: в данном примере используется пользовательский шрифт PT Mono.**
 ## Коллизия и триггеры
 Стандартный модуль библиотеки использует простой метод коллизии **AABB** для прямоугольников. Для проверки столкновения двух примитивов используется простая функция.
 
@@ -610,3 +610,52 @@ void Paint() {
 
 **Пример полного кода:**
 ```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 0, 0, 1600, 900};
+
+square box = {500, 500, 200, 50, 0, red, "Button", true};
+text letter;
+
+RGB superRed = {200, 0, 0, 255};
+
+UIButton clickMe = {box, red, superRed, letter};
+
+text score = {"Счёт: 0", 500, 200, 30, 0, black, "PTM55FT.ttf", "PT Mono", true};
+
+int scoreVar;
+
+void Update();
+
+Start() {
+    MakeWindow(mainWindow);
+
+    clickMe.label.content = "Нажми меня!";
+    clickMe.label.size = 30;
+    clickMe.label.color = white;
+    clickMe.label.fontPath = "PTM55FT.ttf";
+    clickMe.label.fontName = "PT Mono";
+    clickMe.label.active = true;
+
+    DisplayWindow(Update);
+}
+
+void Update() {
+    if (clickMe.isClicked == true) {
+        scoreVar += 1;
+    }
+
+    score.content = "Счёт: " + toText(scoreVar);
+
+    UpdateUIButton(mainWindow, clickMe);
+
+    BeginDraw(mainWindow);
+
+    PaintWindow(mainWindow, white);
+    DrawUIButton(mainWindow, clickMe);
+    DrawText(mainWindow, score);
+
+    EndDraw(mainWindow);
+}
+```
+**Примечание: в данном примере используется пользовательский шрифт PT Mono.**
