@@ -25,6 +25,9 @@ ShashkaCreator использует процессор для отрисовки
 Для того, чтобы программа не завершалась сразу после создания, окну необходимо реагировать на сообщения и выполнять команды.  
 ```void DisplayWindow(UpdateFunction userUpdate);``` - определённое количество раз в секунду вызывает пользовательскую функцию и обрабатывает сообщения окна. В пользовательской функции вы будете описывать все логические и графические действия. 
 
+Если во время работы программы вам захочется изменить пользовательскую функцию, то воспользуйтесь следующей функцией.
+```void SwitchUpdate(UpdateFunction nextUpdate);``` - устанавливает новую пользовательскую функцию, которую будет вызывать функция DisplayWindow();
+
 **Пример полного кода:**  
 ```
 #include "ShashkaCreator.h"
@@ -400,13 +403,16 @@ void Update() {
 ```void BlockCursor();``` - блокирует кусору возможность двигаться.  
 ```void ReleaseCursor();``` - возвращает курсору возможность двигаться.   
 ```void HideCursor();``` - отключает отрисовку курсора на экране.  
-```void ViewCursor();``` - включает отрисовку курсора на экране.  
+```void ViewCursor();``` - включает отрисовку курсора на экране.
+```bool IsCursorTouched(window& update, square& object);``` - возвращает true, если курсор касается заданного примитива в заданном окне.
 
 **Пример полного кода:**
 ```
 #include "ShashkaCreator.h"
 
 window mainWindow = {normal, "Game", 0, 0, 1600, 900};
+
+square wall = {500, 500, 100, 100, 0, red, "Wall", true};
 
 void Update();
 
@@ -416,18 +422,19 @@ Start() {
 }
 
 void Update() {
-    if (GetKeyDown(LeftMouse)) {
-        BlockCursor();
+    if (IsCursorTouched(mainWindow, wall)) {
         HideCursor();
     }
 
-    if (GetKeyDown(RightMouse)) {
-        ReleaseCursor();
+    else {
         ViewCursor();
     }
 
     BeginDraw(mainWindow);
+
     PaintWindow(mainWindow, white);
+    DrawSquare(mainWindow, wall);
+
     EndDraw(mainWindow);
 }
 ```
