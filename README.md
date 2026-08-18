@@ -442,3 +442,49 @@ void Update() {
     EndDraw(mainWindow);
 }
 ```
+## Текст
+Библиотека использует кодировку UTF-8, поддерживает латиницу и киррилицу, а также всевозможные пользовательские шрифты. Давайте создадим текст.
+
+```text [имя текста] = {std::string content, int x, int y, int size, float angle, RGB color, std::string fontPath, std::string fontName, bool active};```
+* **content** - содержание текста.
+* **x и y** - координаты текста в окне.
+* **size** - размер текста.
+* **angle** - угол поворота текста в градусах.
+* **color** - цвет текста.
+* **fontPath** - путь к файлу с пользовательским шрифтом. **Не используйте пробелы и не латинские буквы!**
+* **fontName** - точное имя пользовательского шрифта.
+* **Если хотите использовать стандартный шрифт(Arial), то не заполняйте fontPath и fontName.**
+* **active** - активен ли текст. При значении false текст не будет отрисовываться в окне.
+* **Примечание: по умолчанию библиотека ищет шрифты в папке с .exe файлом вашего проекта.**
+
+Для работы с текстом используется несколько простых функций.
+
+```void DrawText(window& update, text& object);``` - рисует заданный текст в заданном окне.  
+```std::string toText(int variable);``` - тоже самое, что и std::to_string(); Есть также перегрузка для float, double, long long и short.
+
+**Пример полного кода:**
+```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 0, 0, 1600, 900};
+
+text testText = {"Это текст ShashkaCreator!", 500, 500, 50, 0, black, "PTM55FT.ttf", "PT Mono", true};
+
+void Update();
+
+Start() {
+    MakeWindow(mainWindow);
+    DisplayWindow(Update);
+}
+
+void Update() {
+
+    BeginDraw(mainWindow);
+
+    PaintWindow(mainWindow, white);
+    DrawText(mainWindow, testText);
+
+    EndDraw(mainWindow);
+}
+```
+**Примечание: в этом примере используется пользовательский шрифт PT Mono.**
