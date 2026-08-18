@@ -144,7 +144,7 @@ struct sprite {
     const char* path;
     HBITMAP image;
     float x, y;
-    int width, height;
+    float width, height;
     float angle;
     unsigned char alpha = 255;
     COLORREF keyColor;
@@ -214,10 +214,8 @@ struct inputfield {
 struct video {
     std::string path;
     std::string alias;
-    int x;
-    int y;
-    int width;
-    int height;
+    int x, y;
+    int width, height;
     bool active;
 };
 
@@ -230,8 +228,7 @@ struct scrollbar {
 };
 
 struct mouse {
-    int x;
-    int y;
+    int x, y;
 };
 
 struct headmenu {
