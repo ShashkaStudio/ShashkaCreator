@@ -576,7 +576,7 @@ void Paint() {
 }
 ```
 ## Кнопки
-Кнопки являются нестандартными объектами в ShashkaCreator, так как они полностью сделаны из других объектов. В библиотеке есть два вида кнопок: **UIButton** и **spriteButton**. **UIButton** создаётся из обычного примитива и текста, а **spriteButton** создаётся из спрайта и текста. Давайте пройдёмся по каждому виду и создадим несколько кнопок. Да, перед созданием любой из кнопок придётся создать ещё несколько объектов.
+Кнопки являются нестандартными объектами в ShashkaCreator, так как они полностью сделаны из других готовых объектов. В библиотеке есть два вида кнопок: **UIButton** и **spriteButton**. **UIButton** создаётся из обычного примитива и текста, а **spriteButton** создаётся из спрайта и текста. Давайте пройдёмся по каждому виду и создадим несколько кнопок. Да, перед созданием любой из кнопок придётся создать ещё несколько объектов.
 
 ```UIButton [имя кнопки] = {square box, RGB normalColor, RGB hoverColor, text label, bool isHovered, bool isClicked, float clickTimer};```  
 * **box** - примитив, который будет телом кнопки.  
@@ -606,7 +606,7 @@ void Paint() {
 Для отрисовки кнопок используются следующие функции.
 
 ```void DrawUIButton(window &update, UIButton &object);``` - отрисовывает заданную кнопку в заданном окне.  
-```void DrawSpriteButton(window &update, spriteButton &object);``` - отрисовывает заданную кнопку в заданном окне.  
+```void DrawSpriteButton(window &update, spriteButton &object);``` - рисует заданную кнопку в заданном окне.  
 
 **Пример полного кода:**
 ```
@@ -660,7 +660,7 @@ void Update() {
 ```
 **Примечание: в данном примере используется пользовательский шрифт PT Mono.**
 ## Поле ввода
-Поле ввода является также нестандартным объектом в ShashkaCreator, так как полностью состоит из других объектов. Давайте создадим такое.
+Поле ввода также является нестандартным объектом в ShashkaCreator, так как оно полностью сделано из других готовых объектов. Давайте создадим такое. Да, перед созданием поля ввода придётся создать ещё несколько объектов.
 
 ```inputfield [имя поля ввода] = {square box, text label, std::string content, int maxChars, bool isFocused};```
 * **box** - примитив, который будет телом для поля ввода.
@@ -680,7 +680,7 @@ void Update() {
 
 window mainWindow = {normal, "Game", 0, 0, 1600, 900};
 
-square box = {500, 500, 250, 50, 0, red, "Button", true};
+square box = {500, 500, 250, 50, 0, red, "Untagged", true};
 text inputText;
 
 inputfield testField = {box, inputText, "", 19};
@@ -709,3 +709,52 @@ void Update() {
 }
 ```
 ## Полоска прокрутки
+Полоска прокрутки также является нестандартным объектом в ShashkaCreator, так как она полностью сделана из других готовых объектов. Давайте создадим такую. Да, перед созданием полоски прокрутки придётся создать ещё несколько объектов.
+
+```scrollbar [имя полоски прокрутки] = {square box, square slider, int direction, bool isDragged, float filled};```
+* **box** - примитив, который будет телом полоски.
+* **slider** - примитив, который будет ползунком.
+* **direction** - направление полоски прокрутки. Поставьте **horizontal** для горизонтального и **vertical** для вертикального.
+* **isDragged** - тянет ли пользователь за ползунок.
+* **filled** - на каком положении находится ползунок, изменяется от **0.0f** до **1.0f**.
+* **Последние два параметра не заполняйте.**
+
+Для работы с полоской прокрутки используется несколько простых функций.
+
+```void UpdateScrollbar(window& update, scrollbar& object);``` - обрабатывает взаимодействия с заданной полоской прокрутки в заданном окне.  
+```void DrawScrollbar(window& update, scrollbar& object);``` - рисует заданную полоску прокрутки в заданном окне.
+
+**Пример полного кода:**
+```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 0, 0, 1600, 900};
+
+square body = {700, 300, 500, 50, 0, lightBlue, "Untagged", true};
+square interact = {500, 300, 50, 50, 0, blue, "Untagged", true};
+
+scrollbar testBar = {body, interact, horizontal};
+
+text fillText = {"", 700, 100, 30, 0, black, "", "", true};
+
+void Update();
+
+Start() {
+    MakeWindow(mainWindow);
+    DisplayWindow(Update);
+}
+
+void Update() {
+    UpdateScrollbar(mainWindow, testBar);
+
+    fillText.content = toText(testBar.filled);
+
+    BeginDraw(mainWindow);
+
+    PaintWindow(mainWindow, white);
+    DrawText(mainWindow, fillText);
+    DrawScrollbar(mainWindow, testBar);
+
+    EndDraw(mainWindow);
+}
+```
