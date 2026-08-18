@@ -387,3 +387,47 @@ void Update() {
     EndDraw(mainWindow);
 }
 ```
+## Курсор
+Давайте создадим курсор мыши. Для комфортной работы вам хватит всего лишь одного такого объекта.
+
+```mouse [имя курсора] = {int x, int y};```
+* **x и y** - координаты курсора в окне.
+* **Вам не нужно заполнять эти переменные. Они заполняются с помощью специальной функции.**
+
+Для работы с курсором мыши используется несколько простых функций.
+
+```mouse GetMousePosition(const window& update);``` - записывает координаты куросра мыши в заданном окне.  
+```void BlockCursor();``` - блокирует кусору возможность двигаться.  
+```void ReleaseCursor();``` - возвращает курсору возможность двигаться.   
+```void HideCursor();``` - отключает отрисовку курсора на экране.  
+```void ViewCursor();``` - включает отрисовку курсора на экране.  
+
+**Пример полного кода:**
+```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 0, 0, 1600, 900};
+
+void Update();
+
+Start() {
+    MakeWindow(mainWindow);
+    DisplayWindow(Update);
+}
+
+void Update() {
+    if (GetKeyDown(LeftMouse)) {
+        BlockCursor();
+        HideCursor();
+    }
+
+    if (GetKeyDown(RightMouse)) {
+        ReleaseCursor();
+        ViewCursor();
+    }
+
+    BeginDraw(mainWindow);
+    PaintWindow(mainWindow, white);
+    EndDraw(mainWindow);
+}
+```
