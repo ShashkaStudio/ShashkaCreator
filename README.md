@@ -98,7 +98,7 @@ void Update() {
 * **width и height** - размеры примитива.
 * **angle** - угол поворота примитива в градусах.
 * **color** - цвет примитива.
-* **tag** - тэг примитива. При желании можете оставить пустым.
+* **tag** - тег примитива. При желании можете оставить пустым.
 * **active** - активен ли примитив. При значении false примитив не будет отрисовываться в окне.
 
 После создания примитива его можно нарисовать в окне.
@@ -443,7 +443,7 @@ void Update() {
 }
 ```
 ## Текст
-Библиотека использует кодировку UTF-8, поддерживает латиницу и киррилицу, а также всевозможные пользовательские шрифты. Давайте создадим текст.
+Библиотека использует кодировку UTF-8, поддерживает латиницу и киррилицу, а также пользовательские шрифты c расширениями **.ttf** и **.otf**. Давайте создадим текст.
 
 ```text [имя текста] = {std::string content, int x, int y, int size, float angle, RGB color, std::string fontPath, std::string fontName, bool active};```
 * **content** - содержание текста.
@@ -488,3 +488,88 @@ void Update() {
 }
 ```
 **Примечание: в этом примере используется пользовательский шрифт PT Mono.**
+## Коллизия и триггеры
+Стандартный модуль библиотеки использует простой метод коллизии **AABB** для прямоугольников. Для проверки столкновения двух примитивов используется простая функция.
+
+```bool IsCollide(square &objectA, square &objectB);``` - возвращает true, если два примитива столкнулись.
+
+Также на основе этого метода работают триггеры. Давайте создадим такой.
+
+```trigger [имя триггера] = {square area, std::string targetTag, TriggerAction action, bool active = true};```
+* **area** - примитив, который будет телом триггера.
+* **targetTag** - тег, на который будет реагировать триггер.
+* **action** - функция, которую вызовет триггер после активации.
+* **active** - активен ли триггер. При значении false триггер не будет работать.
+
+Для работы с триггером используется простая функция.
+
+```void OnTriggerEnter(trigger &triggerObject, square &targetObject);``` - выполняет действие заданного триггера, если тот сталкивается с заданным примитивом. **После выполнения действия триггер станет неактивным.**
+
+**Пример полного кода:**
+```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 0, 0, 1600, 900};
+
+square player = {200, 200, 50, 25, 0, red, "Player", true};
+square wall = {500, 500, 200, 200, 0, blue, "Wall", true};
+
+float walkSpeed = 200.0f;
+float rotateSpeed = 100.0f;
+float radAngle;
+
+RGB windowColor = white;
+
+void Update();
+
+void Paint();
+
+trigger wallTrigger = {wall, "Player", Paint, true};
+
+Start() {
+    MakeWindow(mainWindow);
+    DisplayWindow(Update);
+}
+
+void Update() {
+    radAngle = player.angle * rad;
+
+    if (GetKey(KeyLEFT)) player.angle -= rotateSpeed * deltaTime;
+    if (GetKey(KeyRIGHT)) player.angle += rotateSpeed * deltaTime;
+
+    if (GetKey(KeyW)) {
+        player.x -= walkSpeed * cos(radAngle) * deltaTime;
+        player.y -= walkSpeed * sin(radAngle) * deltaTime;
+    }
+
+    if (GetKey(KeyS)) {
+        player.x += walkSpeed * cos(radAngle) * deltaTime;
+        player.y += walkSpeed * sin(radAngle) * deltaTime;
+    }
+
+    if (GetKey(KeyD)) {
+        player.x += walkSpeed * sin(radAngle) * deltaTime;
+        player.y -= walkSpeed * cos(radAngle) * deltaTime;
+    }
+
+    if (GetKey(KeyA)) {
+        player.x -= walkSpeed * sin(radAngle) * deltaTime;
+        player.y += walkSpeed * cos(radAngle) * deltaTime;
+    }
+
+    OnTriggerEnter(wallTrigger, player);
+
+    BeginDraw(mainWindow);
+
+    PaintWindow(mainWindow, windowColor);
+    DrawSquare(mainWindow, wall);
+    DrawSquare(mainWindow, player);
+
+    EndDraw(mainWindow);
+}
+
+void Paint() {
+    windowColor = green;
+    wall.active = false;
+}
+```
