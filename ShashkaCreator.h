@@ -176,20 +176,20 @@ struct trigger {
 };
 
 struct UIButton {
-    square& box;
+    square box;
     RGB normalColor;
     RGB hoverColor;
-    text& label;
+    text label;
     bool isHovered;
     bool isClicked;
     float clickTimer = 0;
 };
 
 struct spriteButton {
-    square& box;
-    sprite& normalImage;
-    sprite& hoverImage;
-    text& label;
+    square box;
+    sprite normalImage;
+    sprite hoverImage;
+    text label;
     bool isHovered;
     bool isClicked;
     float clickTimer = 0;
