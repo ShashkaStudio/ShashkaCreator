@@ -176,20 +176,20 @@ struct trigger {
 };
 
 struct UIButton {
-    square box;
+    square& box;
     RGB normalColor;
     RGB hoverColor;
-    text label;
+    text& label;
     bool isHovered;
     bool isClicked;
     float clickTimer = 0;
 };
 
 struct spriteButton {
-    square box;
-    sprite normalImage;
-    sprite hoverImage;
-    text label;
+    square& box;
+    sprite& normalImage;
+    sprite& hoverImage;
+    text& label;
     bool isHovered;
     bool isClicked;
     float clickTimer = 0;
@@ -204,8 +204,8 @@ struct message {
 };
 
 struct inputfield {
-    square box;
-    text label;
+    square& box;
+    text& label;
     std::string content;
     int maxChars = 20;
     bool isFocused = false;
@@ -220,8 +220,8 @@ struct video {
 };
 
 struct scrollbar {
-    square box;
-    square slider;
+    square& box;
+    square& slider;
     int direction;
     bool isDragged;
     float filled = 0.0f;
