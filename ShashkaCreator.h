@@ -13,6 +13,10 @@
 #define LeftMouse 0x01
 #define RightMouse 0x02
 
+#define UpMouse 0x011
+#define DownMouse 0x021
+#define NormalMouse 0x031
+
 #define KeyW 0x57
 #define KeyA 0x41
 #define KeyS 0x53
@@ -375,5 +379,7 @@ void HideCursor();
 void ViewCursor();
 
 void RemakeWindow(window& object);
+
+int GetMouseWheel();
 
 #endif // SHASHKACREATOR_H

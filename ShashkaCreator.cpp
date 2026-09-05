@@ -8,6 +8,8 @@ window* currentWindow = nullptr;
 
 UpdateFunction currentActiveUpdate = nullptr;
 
+int mouseWheelDelta = 0;
+
 wchar_t lastChar = 0;
 
 bool keys[256] = {false};
@@ -33,6 +35,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
     if (msg == WM_CHAR) {
         lastChar = (wchar_t)wp;
+        return 0;
+    }
+
+    if (msg == WM_MOUSEWHEEL) {
+        short delta = GET_WHEEL_DELTA_WPARAM(wp);
+        mouseWheelDelta = delta / WHEEL_DELTA;
         return 0;
     }
 
@@ -129,6 +137,8 @@ void DisplayWindow(UpdateFunction userUpdate) {
             if (currentActiveUpdate != nullptr) {
                 currentActiveUpdate();
             }
+
+            mouseWheelDelta = 0;
 
             Sleep(1);
         }
@@ -917,4 +927,18 @@ void ViewCursor() {
 
 void RemakeWindow(window& object) {
     SetWindowPos(object.hwnd, NULL, object.x, object.y, object.width, object.height, SWP_NOMOVE | SWP_NOZORDER);
+}
+
+int GetMouseWheel() {
+    if (mouseWheelDelta > 0) {
+        return UpMouse;
+    }
+
+    else if (mouseWheelDelta < 0) {
+        return DownMouse;
+    }
+
+    else {
+        return NormalMouse;
+    }
 }
