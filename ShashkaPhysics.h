@@ -112,10 +112,6 @@ float KineticEnergy(dynamicSquare& object);
 
 float PotentialEnergy(dynamicSquare& object, float ground);
 
-float PowerByForce(float force, float velocity);
-
-float PowerByWork(float work, float time);
-
 void ApplyArchimedesForce(dynamicSquare& object, const liquid& fluid);
 
 void DrawLiquid(window& update, liquid& object);

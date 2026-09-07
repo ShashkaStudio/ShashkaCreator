@@ -266,18 +266,6 @@ float PotentialEnergy(dynamicSquare& object, float ground) {
     return object.mass * g * h;
 }
 
-float Work(float force, float distance) {
-    return force * distance;
-}
-
-float PowerByForce(float force, float velocity) {
-    return force * velocity;
-}
-
-float PowerByWork(float work, float time) {
-    return work / time;
-}
-
 void ApplyArchimedesForce(dynamicSquare& object, const liquid& fluid) {
     if (!object.active || !fluid.active) return;
 
