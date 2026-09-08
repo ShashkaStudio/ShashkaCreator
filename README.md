@@ -1009,3 +1009,35 @@ void Restart() {
     LaunchBallisticMovement(bodyB, 500, 30);
 }
 ```
+## Динамика
+Раздел механики, изучающий движение тел с выяснением причиным этого движения. То есть здесь мы получим тело со особенными параметрами(масса, трение и т.п.) и будем прикладывать к нему различные силы. Однако, взаимодействие между двумя динамичными подвижными телами будет описано в другом разделе.
+
+```dynamicSquare [имя тела] = {float x, float y, float width, float height, float angle, RGB color, std::string tag, bool active, float mass, float friction, float vx, float vy, float ax, float ay, float fx, float fy, float currentN};```
+* **x и y** - положение тела в окне.
+* **width и height** - размеры тела.
+* **angle** - угол поворота тела.
+* **color** - цвет тела.
+* **tag** - тег тела.
+* **active** - активно ли тело. При значении false не будет отрисовываться в окне.
+* **mass** - масса тела.
+* **friction** - коэффицент трения.
+* **vx и vy** - скорости движения тела по осям X и Y.
+* **ax и ay** - ускорения тела по осям X и Y.
+* **fx и fy** - силы, приложенные к телу, по осям X и Y.
+* **currentN** - итоговая сила нормальной реакции к телу. **Не заполняйте этот параметр.**
+
+Теперь пройдёмся по всем силам, которые мы можем приложить к телу.
+
+```void ApplyGravity(dynamicSquare& object);``` - прикладывает силу тяжести к заданному телу.  
+```bool ApplyNormalReaction(dynamicSquare& dynamicObject, const dynamicSquare& staticObject);``` - прикладывает силу нормальной реакции к заданному подвижному телу со стороны заданной невесомой поверхности и возвращает true, если тело и поверхность соприкасаются.  
+```void ApplyFriction(dynamicSquare& object);``` - прикладывает силу трения к заданному телу.  
+```void ApplyForce(dynamicSquare& object, float fx, float fy);``` - прикладывает произвольную силу к заданному телу.  
+
+Вот и всё, осталось только вычислить, куда будет двигаться тело под действием всех сил, и нарисовать его.
+
+```void UpdateDynamic(dynamicSquare& object);``` - обрабатывает все силы и перемещает заданное тело.  
+```void DrawDynamicSquare(window& update, dynamicSquare& object);``` - рисует заданное тело в заданном окне.  
+
+**Пример полного кода:**
+```
+```
