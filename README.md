@@ -944,7 +944,7 @@ void Update() {
 ## Кинематика
 Раздел механики, изучающий движение тел без выяснения причины этого движения. То есть здесь мы получим тело без каких-либо особенных параметров и будем использовать разные типы движения. Говоря ещё прощё: прямоугольник с векторами и ускорением. Никаких взаимодействий тут нет.
 
-```kinematicSquare [имя тела] = {float x, float y, float width, height, float angle, RGB color, std::string tag, bool active, float vx, float vy, float ax, float ay, float orbitAngle};```
+```kinematicSquare [имя тела] = {float x, float y, float width, float height, float angle, RGB color, std::string tag, bool active, float vx, float vy, float ax, float ay, float orbitAngle};```
 * **x и y** - положение тела в окне.
 * **width и height** - размеры тела.
 * **angle** - угол поворота тела.
