@@ -866,7 +866,8 @@ void Update() {
 * **idRetry** - кнопка "Повторить".
 * **idAgain** - кнопка "Повторить попытку".
 
-Для взаимодействия с диалоговым окном используется следующая функция.
+Для взаимодействия с диалоговым окном используется следующая функция.  
+
 ```int ShowMessage(window &update, message &object);``` - рисует заданное диалоговое окно в заданном окне и возвращает ID нажатой кнопки.
 
 **Пример полного кода:**
@@ -933,5 +934,78 @@ void Update() {
     EndDraw(mainWindow);
 }
 ```
-## Делать документацию про модули для физики и файловой системы мне лень, так что дальше разбирайтесь сами. Может быть когда-то я вернусь сюда и закончу всё это.
+# Физика - ShashkaPhysics
+# Что даёт этот модуль?
+Этот модуль даёт простую 2д механику от вида сбоку. Также стоит отметить, что для коллизии используется метод AABB, то есть вся коллизия будет рассчитываться как для прямоугольников. Конечно, это не гиперреалистично, но вполне подойдёт для платформеров.
+# Как установить модуль?
+Физика устанавливается поверх основного модуля, так что в вашем С++ проекте уже должен быть установлен **ShashkaCreator**. Здесь всё также просто: добавьте файлы **ShashkaPhysics.cpp** и **ShashkaPhysics.h** в ваш проект и подключите библиотеку в основном файле как **#include "ShashkaPhysics.h**.
+# Какая сейчас версия?
+Такая же, какая и у основного **ShashkaCreator**.
+## Кинематика
+Раздел механики, изучающий движение тел без выяснения причины этого движения. То есть здесь мы получим тело без каких-либо особенных параметров и будем использовать разные типы движения. Говоря ещё прощё: прямоугольник с векторами и ускорением. Никаких взаимодействий тут нет.
 
+```kinematicSquare [имя тела] = {float x, float y, float width, height, float angle, RGB color, std::string tag, bool active, float vx, float vy, float ax, float ay, float orbitAngle};```
+* **x и y** - положение тела в окне.
+* **width и height** - размеры тела.
+* **angle** - угол поворота тела.
+* **color** - цвет тела.
+* **tag** - тег тела.
+* **active** - активно ли тело. При значении false не будет отрисовываться в окне.
+* **vx и vy** - скорости движения тела по осям X и Y.
+* **ax и ay** - ускорения тела по осям X и Y.
+* **orbitAngle** - угол поворота тела относительно центра окружности(пригодится во время движения по окружности). 
+
+Теперь пройдёмся по всем видам движения. Всего их пять, но каждое из них можно выразить через прямолинейное движение и равноускоренное движение.  
+
+```void UpdateUniformMovement(kinematicSquare& object);``` - перемещает заданное тело равномерно и прямолинейно.  
+```void UpdateAcceleratedMovement(kinematicSquare& object);``` - перемещает заданное тело равноускоренно.  
+```void UpdateFreeFall(kinematicSquare& object);``` - перемещает заданное тело только по оси Y с ускорением, равным **g**(свободное падение).  
+```void LaunchBallisticMovement(kinematicSquare& object, float initialVelocity, float angle);``` - начинает баллистическое движение заданного тела с заданной скоростью под заданным углом к оси Y.  
+```void UpdateBallisticMovement(kinematicSquare& object);``` - баллистически перемещает заданное тело. Перед вызовом этой функции обязательно нужно вызвать ```LaunchBallistic```.
+```void UpdateCircularMovement(kinematicSquare& object, float centerX, float centerY, float radius, float angularVelocity);``` - перемещает заданное тело по окружности с заданным центром, радиусом и угловой скоростью.
+
+Вот и всё, осталось только нарисовать тело.
+
+```void DrawKinematicSquare(window& update,kinematicSquare& object);``` - рисует заданное тело в заданном окне.
+
+**Пример полного кода:**
+```
+#include "ShashkaCreator.h"
+#include "ShashkaPhysics.h"
+
+window mainWindow = {normal, "Game", 100, 100, 1600, 900};
+
+kinematicSquare bodyA = {100, 700, 30, 30, 0, red, "Untagged", true};
+kinematicSquare bodyB = {100, 400, 30, 30, 0, blue, "Untagged", true};
+
+void Update();
+
+void Restart();
+
+Start() {
+    MakeWindow(mainWindow);
+    Restart();
+    DisplayWindow(Update);
+}
+
+void Update() {
+    if (GetKeyDown(KeyR)) Restart();
+    UpdateBallisticMovement(bodyA);
+    UpdateBallisticMovement(bodyB);
+
+    BeginDraw(mainWindow);
+
+    PaintWindow(mainWindow, white);
+    DrawKinematicSquare(mainWindow, bodyA);
+    DrawKinematicSquare(mainWindow, bodyB);
+
+    EndDraw(mainWindow);
+}
+
+void Restart() {
+    bodyA.x = 100; bodyA.y = 700;
+    bodyB.x = 100; bodyB.y = 400;
+    LaunchBallisticMovement(bodyA, 750, 45);
+    LaunchBallisticMovement(bodyB, 500, 30);
+}
+```
