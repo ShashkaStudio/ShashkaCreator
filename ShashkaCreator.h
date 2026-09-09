@@ -1,12 +1,19 @@
 #ifndef SHASHKACREATOR_H
 #define SHASHKACREATOR_H
 
+#include <iostream>
 #include <windows.h>
 #include <objbase.h>
 #include <math.h>
 #include <mmsystem.h>
 #include <string>
 #include <clocale>
+#include <tlhelp32.h>
+#include <shellapi.h>
+
+#ifndef SHTDN_REASON_MAJOR_OTHER
+    #define SHTDN_REASON_MAJOR_OTHER 0x00000000
+#endif
 
 #define Start int main
 
@@ -249,6 +256,14 @@ struct submenu {
     int id;
 };
 
+struct date {
+    int day, month, year;
+};
+
+struct time {
+    int hour, minute, second, millisecond;
+};
+
 const float rad = 3.14159f / 180.0f;
 
 const RGB red = {255, 0, 0, 255};
@@ -381,5 +396,35 @@ void ViewCursor();
 void RemakeWindow(window& object);
 
 int GetMouseWheel();
+
+bool SaveTextToFile(const std::string& path, const std::string& content);
+
+std::string LoadTextFromFile(const std::string& path);
+
+bool CreateTextFile(const std::string& path);
+
+bool IsFileExisted(const std::string& path);
+
+bool RemoveFile(const std::string& path);
+
+bool CopyFile(const std::string& sourcePath, const std::string& destPath);
+
+bool MoveFile(const std::string& sourcePath, const std::string& destPath);
+
+bool RenameFile(const std::string& sourcePath, const std::string& destPath);
+
+bool KillProcess(const std::string& name);
+
+void GetDate(date& object);
+
+void GetTime(time& object);
+
+void Shutdown(int seconds);
+
+bool StartProcess(const std::string& path, const std::string& arguments);
+
+bool SetAutoStart(const std::string& name, const std::string& path);
+
+bool UnsetAutoStart(const std::string& name);
 
 #endif // SHASHKACREATOR_H
