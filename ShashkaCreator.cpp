@@ -1,6 +1,6 @@
 #include "ShashkaCreator.h"
 
-bool isRecreatingWindow = false;
+bool isRecreatingWindow = 0;
 
 int _shashkaLastClickedMenuID = -1;
 
@@ -12,8 +12,8 @@ int mouseWheelDelta = 0;
 
 wchar_t lastChar = 0;
 
-bool keys[256] = {false};
-bool prevKeys[256] = {false};
+bool keys[256] = {0};
+bool prevKeys[256] = {0};
 
 float deltaTime = 0;
 
@@ -22,7 +22,7 @@ float cameraY = 0.0f;
 
 LARGE_INTEGER qpcFrequency;
 LARGE_INTEGER qpcLastTime;
-bool isTimerInitialized = false;
+bool isTimerInitialized = 0;
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     if (msg == WM_DESTROY) {
@@ -97,12 +97,12 @@ void DisplayWindow(UpdateFunction userUpdate) {
     if (!isTimerInitialized) {
         QueryPerformanceFrequency(&qpcFrequency);
         QueryPerformanceCounter(&qpcLastTime);
-        isTimerInitialized = true;
+        isTimerInitialized = 1;
     }
 
     timeBeginPeriod(1);
 
-    while (true) {
+    while (1) {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) break;
 
@@ -148,7 +148,7 @@ void DisplayWindow(UpdateFunction userUpdate) {
 }
 
 void DrawSquare(window& update, square& object) {
-    if (object.active == false) return;
+    if (!object.active) return;
 
     float radAngle = object.angle * 3.14159f / 180.0f;
     float s_sin = sinf(radAngle);
@@ -291,7 +291,7 @@ void ResumeSound(const sound &object) {
 }
 
 void DrawText(window& update, text& object) {
-    if (object.active == false) return;
+    if (!object.active) return;
 
     std::wstring finalFontName = L"Arial";
 
@@ -368,7 +368,7 @@ void DrawText(window& update, text& object) {
 }
 
 void DrawSprite(window &update, sprite &object) {
-    if (object.active == false || !object.image) return;
+    if (!object.active || !object.image) return;
 
     BITMAP bm;
     GetObject(object.image, sizeof(bm), &bm);
@@ -457,8 +457,12 @@ std::string toText(short variable) {
     return std::to_string(variable);
 }
 
+std::string toText(bool variable) {
+    return std::to_string(variable);
+}
+
 bool IsCollide(square &objectA, square &objectB) {
-    if (objectA.active == false || objectB.active == false) return false;
+    if (!objectA.active || !objectB.active) return 0;
 
     float aLeft = objectA.x - (objectA.width / 2.0f);
     float aTop  = objectA.y - (objectA.height / 2.0f);
@@ -473,12 +477,12 @@ bool IsCollide(square &objectA, square &objectB) {
 }
 
 void OnTriggerEnter(trigger &triggerObject, square &targetObject) {
-    if (triggerObject.area.active == false) return;
+    if (!triggerObject.area.active) return;
     if (!triggerObject.active) return;
 
     if (IsCollide(triggerObject.area, targetObject) && targetObject.tag == triggerObject.targetTag) {
         triggerObject.action();
-        triggerObject.active = false;
+        triggerObject.active = 0;
     }
 }
 
@@ -487,7 +491,7 @@ void SwitchUpdate(UpdateFunction nextUpdate) {
 }
 
 bool IsCursorTouched(window& update, square& object) {
-    if (object.active == false) return false;
+    if (!object.active) return 0;
 
     POINT m;
     GetCursorPos(&m);
@@ -499,10 +503,10 @@ bool IsCursorTouched(window& update, square& object) {
     float bottom = object.y + (object.height / 2.0f);
 
     if (m.x >= left && m.x <= right && m.y >= top && m.y <= bottom) {
-        return true;
+        return 1;
     }
 
-    return false;
+    return 0;
 }
 
 void UpdateUIButton(window &update, UIButton &object) {
@@ -510,23 +514,23 @@ void UpdateUIButton(window &update, UIButton &object) {
 
     if (object.clickTimer > 0) {
         object.clickTimer -= deltaTime;
-        object.isClicked = false;
+        object.isClicked = 0;
         return;
     }
 
     if (IsCursorTouched(update, object.box)) {
-        object.isHovered = true;
+        object.isHovered = 1;
         object.box.color = object.hoverColor;
 
         if (keys[1]) {
-            object.isClicked = true;
+            object.isClicked = 1;
             object.clickTimer = 0.1f;
         }
     }
 
     else {
-        object.isHovered = false;
-        object.isClicked = false;
+        object.isHovered = 0;
+        object.isClicked = 0;
         object.box.color = object.normalColor;
     }
 }
@@ -536,21 +540,21 @@ void UpdateSpriteButton(window &update, spriteButton &object) {
 
     if (object.clickTimer > 0) {
         object.clickTimer -= deltaTime;
-        object.isClicked = false;
+        object.isClicked = 0;
         return;
     }
 
     if (IsCursorTouched(update, object.box)) {
-        object.isHovered = true;
+        object.isHovered = 1;
         if (keys[1]) {
-            object.isClicked = true;
+            object.isClicked = 1;
             object.clickTimer = 0.1f;
         }
     }
 
     else {
-        object.isHovered = false;
-        object.isClicked = false;
+        object.isHovered = 0;
+        object.isClicked = 0;
     }
 }
 
@@ -569,7 +573,7 @@ void DrawSpriteButton(window &update, spriteButton &object) {
 
     sprite* currentImage;
 
-    if (object.isHovered == true) {
+    if (object.isHovered == 1) {
         currentImage = &object.hoverImage;
     }
 
@@ -591,7 +595,7 @@ void DrawSpriteButton(window &update, spriteButton &object) {
 }
 
 int ShowMessage(window &update, message &object) {
-    if (object.active == false) {
+    if (!object.active) {
         return 39217;
     }
 
@@ -732,14 +736,14 @@ void ResumeVideo(const video& object) {
 
 
 void UpdateScrollbar(window& update, scrollbar& object) {
-    if (object.box.active == false || object.slider.active == false) return;
+    if (!object.box.active || !object.slider.active) return;
 
     if (IsCursorTouched(update, object.slider) && keys[1]) {
-        object.isDragged = true;
+        object.isDragged = 1;
     }
 
     if (!keys[1]) {
-        object.isDragged = false;
+        object.isDragged = 0;
     }
 
     if (object.direction == horizontal) {
@@ -822,7 +826,7 @@ void UpdateScrollbar(window& update, scrollbar& object) {
 }
 
 void DrawScrollbar(window& update, scrollbar& object) {
-    if (object.box.active == false || object.slider.active == false) return;
+    if (!object.box.active || !object.slider.active) return;
 
     DrawSquare(update, object.box);
     DrawSquare(update, object.slider);
@@ -895,9 +899,10 @@ void EndMenu(window& update, headmenu& parent, menu& object) {
 bool ClickMenu(const submenu& object) {
     if (_shashkaLastClickedMenuID == object.id) {
         _shashkaLastClickedMenuID = -1;
-        return true;
+        return 1;
     }
-    return false;
+
+    return 0;
 }
 
 void BlockCursor() {
@@ -954,7 +959,7 @@ bool SaveTextToFile(const std::string& path, const std::string& content) {
         NULL
     );
 
-    if (hFile == INVALID_HANDLE_VALUE) return false;
+    if (hFile == INVALID_HANDLE_VALUE) return 0;
 
     DWORD bytesWritten = 0;
 
@@ -1011,33 +1016,33 @@ bool CreateTextFile(const std::string& path) {
         NULL
     );
 
-    if (hFile == INVALID_HANDLE_VALUE) return false;
+    if (hFile == INVALID_HANDLE_VALUE) return 0;
 
     CloseHandle(hFile);
-    return true;
+    return 1;
 }
 
 bool IsFileExisted(const std::string& path) {
     DWORD attrib = GetFileAttributesA(path.c_str());
 
-    if (attrib == INVALID_FILE_ATTRIBUTES) return false;
+    if (attrib == INVALID_FILE_ATTRIBUTES) return 0;
 
     return !(attrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
 bool RemoveFile(const std::string& path) {
-    if (!IsFileExisted(path)) return true;
+    if (!IsFileExisted(path)) return 1;
 
     return DeleteFileA(path.c_str()) != 0;
 }
 
 bool CopyFile(const std::string& sourcePath, const std::string& destPath) {
-    if (!IsFileExisted(sourcePath)) return false;
+    if (!IsFileExisted(sourcePath)) return 0;
     return CopyFileA(sourcePath.c_str(), destPath.c_str(), FALSE) != 0;
 }
 
 bool MoveFile(const std::string& sourcePath, const std::string& destPath) {
-    if (!IsFileExisted(sourcePath)) return false;
+    if (!IsFileExisted(sourcePath)) return 0;
 
     if (IsFileExisted(destPath)) {
         RemoveFile(destPath);
@@ -1047,16 +1052,16 @@ bool MoveFile(const std::string& sourcePath, const std::string& destPath) {
 }
 
 bool RenameFile(const std::string& sourcePath, const std::string& destPath) {
-    if (!IsFileExisted(sourcePath)) return false;
+    if (!IsFileExisted(sourcePath)) return 0;
 
     return MoveFileA(sourcePath.c_str(), destPath.c_str()) != 0;
 }
 
 bool KillProcess(const std::string& name) {
-    bool killed = false;
+    bool killed = 0;
 
     HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    if (hSnapshot == INVALID_HANDLE_VALUE) return false;
+    if (hSnapshot == INVALID_HANDLE_VALUE) return 0;
 
     PROCESSENTRY32 pe;
     pe.dwSize = sizeof(PROCESSENTRY32);
@@ -1068,7 +1073,7 @@ bool KillProcess(const std::string& name) {
 
                 if (hProcess != NULL) {
                     if (TerminateProcess(hProcess, 0)) {
-                        killed = true;
+                        killed = 1;
                     }
 
                     CloseHandle(hProcess);
@@ -1128,7 +1133,7 @@ bool SetAutoStart(const std::string& name, const std::string& path) {
         &hKey
     );
 
-    if (openRes != ERROR_SUCCESS) return false;
+    if (openRes != ERROR_SUCCESS) return 0;
 
     LONG setRes = RegSetValueExA(
         hKey,
@@ -1154,7 +1159,7 @@ bool UnsetAutoStart(const std::string& name) {
         &hKey
     );
 
-    if (openRes != ERROR_SUCCESS) return false;
+    if (openRes != ERROR_SUCCESS) return 0;
 
     LONG delRes = RegDeleteValueA(hKey, name.c_str());
 

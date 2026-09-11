@@ -183,7 +183,7 @@ struct trigger {
     square area;
     std::string targetTag;
     TriggerAction action;
-    bool active = true;
+    bool active = 1;
 };
 
 struct UIButton {
@@ -318,6 +318,8 @@ std::string toText(double variable);
 std::string toText(float variable);
 
 std::string toText(short variable);
+
+std::string toText(bool variable);
 
 bool IsCollide(square &objectA, square &objectB);
 
