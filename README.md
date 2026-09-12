@@ -265,7 +265,7 @@ void Update() {
 ```void StopAllSounds();``` - останавливает проигрывание всех звуков и **удаляет все звуки**.  
 ```void PauseSound(const sound &object);``` - останавливает проигрывание заданного звука и **не удаляет его**.  
 ```void ResumeSound(const sound &object);``` - возобновляет проигрывание заданного звука.  
-```void SetSoundVolume(const sound& object, int volume);``` - устанавливает **громкость** заданного звука на заданное значение **(от 0 до 100)**.  
+```void SetSoundVolume(const sound& object, int volume);``` - устанавливает **громкость** заданного звука на заданное значение **(от 0 до 1000)**.  
 
 **Пример полного кода:**
 ```
