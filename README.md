@@ -24,7 +24,7 @@
 
 ```void MakeWindow(window& object);``` - создаёт окно.
 
-Если во время работы программы вам захочется изменить размеры окна, то воспользуйтесь следующей функцией.  
+Если во время работы программы вам захочется изменить размеры или тип окна, то поменяйте их в вашем объекте и вызовите следующую функцию.  
 
 ```void RemakeWindow(window& object);``` - пересоздаёт окно.
 
@@ -923,6 +923,49 @@ Start() {
 void Update() {
     if (ShowMessage(mainWindow, msg) == idYes) {
         Quit();
+    }
+
+    else {
+        msg.active = false;
+    }
+
+    BeginDraw(mainWindow);
+    PaintWindow(mainWindow, white);
+    EndDraw(mainWindow);
+}
+```
+## Работа с файлами
+Ну куда же без них. Здесь всё максимально просто, структур никаких нет, так что быстренько пройдёмся по всем функциям.
+
+```bool IsFileExisted(const std::string& path);``` - возвращает 1, если файл по заданному пути существует.  
+```bool RemoveFile(const std::string& path);``` - удаляет заданный файл и возвращает 1, если операция прошла успешно.  
+```bool CopyFile(const std::string& sourcePath, const std::string& destPath);``` - создаёт копию заданного файла по заданному пути и возвращает 1, если операция прошла успешно.  
+```bool MoveFile(const std::string& sourcePath, const std::string& destPath);``` - перемещает заданный файл по новому заданному пути и возвращает 1, если операция прошла успешно.  
+```bool RenameFile(const std::string& sourcePath, const std::string& destPath);``` - переименовывает заданный файл и возвращает 1, если операция прошла успешно. **(Да, новое имя файла нужно писать вместе с путём к нему).**
+
+**Примечание: если в качестве путя к файлу указывать только название файла(без самого путя к нему), то библиотека будет искать его в папке с .exe файлом проекта. Если вы хотите указать полноценный путь к файлу, то делайте это через двойной слеш(например: "D:\\Documents\\"). Не используйте не латинские буквы!**
+
+**Пример полного кода:**
+```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 100, 100, 1600, 900};
+
+message msg = {"Работаем с файлом", "Удалить файл Sponge.txt?", question, yes_no, true};
+
+void Update();
+
+void Restart();
+
+Start() {
+    MakeWindow(mainWindow);
+    DisplayWindow(Update);
+}
+
+void Update() {
+    if (ShowMessage(mainWindow, msg) == idYes) {
+        RemoveFile("Sponge.txt");
+        msg.active = false;
     }
 
     else {
