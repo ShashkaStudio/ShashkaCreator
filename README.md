@@ -900,10 +900,12 @@ void Update() {
 }
 ```
 ## Завершение работы
-Даже не вижу смысла что-то объяснять.
+Даже не вижу смысла что-либо подробно объяснять. Перейдём сразу к функциям.
 
 ```void Quit();``` - завершает работу программы.  
 ```void ForceClose();``` - принудительно завершает работу программмы.  
+
+В чём отличия? Да в том, что 
 
 **Пример полного кода:**
 ```
@@ -1022,4 +1024,94 @@ void Update() {
 ## Процессы
 С процессами можно сделать не очень много вещей: начать, остановить, поставить и снять с автозапуска. Разберёмся с каждым из них.
 
+```bool KillProcess(const std::string& name);``` - останавливает работу заданной программы и возвращает 1, если операция прошла успещно.  
+```void Shutdown(int seconds);``` - выключает устройство через заданное количество секунд после вызова функции.  
+```bool StartProcess(const std::string& path, const std::string& arguments);``` - начинает работу заданной программы, передаёт ей на вход заданный аргумент и возвращает 1, если операция прошла успешно.  
+```bool SetAutoStart(const std::string& name, const std::string& path);``` - ставит заданную программу на автозапуск и возвращает 1, если операция прошла успешно.
+```bool UnsetAutoStart(const std::string& name);``` - снимает заданную программу с автозапуска и возвращает 1, если операция прошла успешно.
+
+**Пример полного кода:**
 ```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 100, 100, 1600, 900};
+
+message msg = {"Выключение", "Выключить устройство через 30 секунд?", question, yes_no, true};
+
+void Update();
+
+void Restart();
+
+Start() {
+    MakeWindow(mainWindow);
+    DisplayWindow(Update);
+}
+
+void Update() {
+    if (ShowMessage(mainWindow, msg) == idYes) {
+        Shutdown(30);
+        msg.active = false;
+    }
+
+    else {
+        msg.active = false;
+    }
+
+    BeginDraw(mainWindow);
+    PaintWindow(mainWindow, white);
+    EndDraw(mainWindow);
+}
+```
+## Дата и время
+Считаем дату и время с устройства. Здесь всё также просто, но придётся использовать пару структур.
+
+```date [имя даты] = {int day, int month, int year};```
+* **day** - день.
+* **month** - месяц.
+* **year** - год.
+* **Ничего здесь не заполняйте.**
+
+```time [имя времени] = {int hour, int minute, int second, int millisecond};```
+* **hour** - час.
+* **minute** - минута.
+* **second** - секунда.
+* **millisecond** - миллисекунда.
+* **Ничего здесь не заполняйте.**
+
+Теперь пройдёмся по самим функциями.
+
+```void GetDate(date& object);``` - записывает в заданную дату дату с устройства.   
+```void GetTime(time& object);``` - записывает в заданное время время с устройства.   
+
+**Пример полного кода:**
+```
+#include "ShashkaCreator.h"
+
+window mainWindow = {normal, "Game", 100, 100, 1600, 900};
+
+text textTime = {"", 200, 200, 30, 0, black, "", "", 1};
+
+time t;
+
+void Update();
+
+void Restart();
+
+Start() {
+    MakeWindow(mainWindow);
+    DisplayWindow(Update);
+}
+
+void Update() {
+    GetTime(t);
+    textTime.content = toText(t.hour) + ":" + toText(t.minute) + ":" + toText(t.second);
+
+    BeginDraw(mainWindow);
+
+    PaintWindow(mainWindow, white);
+    DrawText(mainWindow, textTime);
+
+    EndDraw(mainWindow);
+}
+```
+# Эпилог
