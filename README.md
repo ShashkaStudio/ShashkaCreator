@@ -15,7 +15,7 @@
 ## Окно
 Основой любого графического приложения является окно. Давайте создадим такое.  
 
-```window [имя окна] = {int style, std::string name, int x, int y, int width, int height, HWND hwnd, HDC memDC, BITMAP hBuffer, HBITMAP hOld};```  
+```window имя = {int style, std::string name, int x, int y, int width, int height, HWND hwnd, HDC memDC, BITMAP hBuffer, HBITMAP hOld};```  
 * **style** - стиль окна. Поставьте **normal** для обычного окна и **fullscreen** для полноэкранного.
 * **name** - название окна, которое будет отображаться в рамке. Лучше используйте латиницу.
 * **x и y** - координаты окна на экране.
@@ -65,7 +65,7 @@ void Update() {
 
 У каждого объекта для рисования есть свой цвет. 
 
-```RGB [имя цвета] = {int red, int green, int blue, unsigned char alpha};```  
+```RGB имя = {int red, int green, int blue, unsigned char alpha};```  
 * **red** - преобладание красного в цвете. 
 * **green** - преобладание зелёного в цвете.
 * **blue** - преобладание синего в цвете.
@@ -99,7 +99,7 @@ void Update() {
 ## Отрисовка примитивов
 Основой любых графических элементов в ShashkaCreator являются примитивы, то есть прямоугольники. Давайте создадим такой.
 
-```square [имя примитива] = {float x, float y, float width, float height, float angle, RGB color, std::string tag, bool active};```
+```square имя = {float x, float y, float width, float height, float angle, RGB color, std::string tag, bool active};```
 * **x и y** - координаты примитива в окне.
 * **width и height** - размеры примитива.
 * **angle** - угол поворота примитива в градусах.
