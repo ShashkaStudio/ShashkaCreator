@@ -450,7 +450,7 @@ void Update() {
 }
 ```
 ## Текст
-Библиотека использует кодировку UTF-8, а также поддерживает любые шрифты c расширениями **.ttf** и **.otf**. Давайте создадим текст.
+Библиотека использует кодировку **UTF-8**, а также поддерживает любые шрифты c расширениями **.ttf** и **.otf**. Давайте создадим текст.
 
 ```text имя = {std::string content, int x, int y, int size, float angle, RGB color, std::string fontPath, std::string fontName, bool active};```
 * **content** - содержание текста.
