@@ -1,7 +1,6 @@
 #ifndef SHASHKACREATOR_H
 #define SHASHKACREATOR_H
 
-#include <iostream>
 #include <windows.h>
 #include <objbase.h>
 #include <math.h>
