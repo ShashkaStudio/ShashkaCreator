@@ -464,11 +464,17 @@ std::string toText(bool variable) {
 bool IsCollide(square &objectA, square &objectB) {
     if (!objectA.active || !objectB.active) return 0;
 
-    float aLeft = objectA.x - (objectA.width / 2.0f);
-    float aTop  = objectA.y - (objectA.height / 2.0f);
+    float screenXA = objectA.x - cameraX;
+    float screenYA = objectA.y - cameraY;
 
-    float bLeft = objectB.x - (objectB.width / 2.0f);
-    float bTop  = objectB.y - (objectB.height / 2.0f);
+    float screenXB = objectB.x - cameraX;
+    float screenYB = objectB.y - cameraY;
+
+    float aLeft = screenXA - (objectA.width / 2.0f);
+    float aTop  = screenYA - (objectA.height / 2.0f);
+
+    float bLeft = screenXB - (objectB.width / 2.0f);
+    float bTop  = screenYB - (objectB.height / 2.0f);
 
     return (aLeft < bLeft + objectB.width &&
             aLeft + objectA.width > bLeft &&
@@ -493,14 +499,17 @@ void SwitchUpdate(UpdateFunction nextUpdate) {
 bool IsCursorTouched(window& update, square& object) {
     if (!object.active) return 0;
 
+    float screenX = object.x - cameraX;
+    float screenY = object.y - cameraY;
+
     POINT m;
     GetCursorPos(&m);
     ScreenToClient(update.hwnd, &m);
 
-    float left   = object.x - (object.width / 2.0f);
-    float right  = object.x + (object.width / 2.0f);
-    float top    = object.y - (object.height / 2.0f);
-    float bottom = object.y + (object.height / 2.0f);
+    float left   = screenX - (object.width / 2.0f);
+    float right  = screenX + (object.width / 2.0f);
+    float top    = screenY - (object.height / 2.0f);
+    float bottom = screenY + (object.height / 2.0f);
 
     if (m.x >= left && m.x <= right && m.y >= top && m.y <= bottom) {
         return 1;
