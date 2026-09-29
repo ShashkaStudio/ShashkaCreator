@@ -1,6 +1,6 @@
 # ShashkaCreator
-## ShashkaCreator is open source C++ library for creating 2D GUI applications on Windows. The library is written in Code::Blocks using the standard WinAPI libraries. 
-## Shashka Creator — это библиотека с открытым исходным кодом на C++ для создания 2D оконных приложений под Windows. Библиотека написана в Code::Blocks с использованием стандартных библиотек WinAPI.
+## ShashkaCreator is open source C++ library for creating 2D GUI applications on Windows. The library is written in Code::Blocks and DevC++ using the standard WinAPI libraries. 
+## Shashka Creator — это библиотека с открытым исходным кодом на C++ для создания 2D оконных приложений под Windows. Библиотека написана в Code::Blocks и DevC++ с использованием стандартных библиотек WinAPI.
 # Кто может использовать библиотеку?
 **ShashkaCreator** абсолютно бесплатный для асболютно любых целей и абсолютно любого использования, да ещё и с открытым исходным кодом. Скрывать там буквально нечего: пару файлов, которые открываются даже через обычный блокнот. Так что используйте исходный код по полной. Буду рад всевозможным переделкам. Также прошу обязательно написать мне, если вы обнаружите в движке какой-то баг или недоработку.
 # Как установить библиотеку?
