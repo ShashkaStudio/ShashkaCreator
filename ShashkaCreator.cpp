@@ -702,13 +702,16 @@ void ForceClose() {
 void LoadVideo(window& update, video& object) {
     if (object.path.empty() || object.alias.empty()) return;
 
+    float screenX = object.x - cameraX;
+    float screenY = object.y - cameraY;
+
     std::string cmd = "open \"" + object.path + "\" type mpegvideo alias " + object.alias +
                       " parent " + std::to_string((uintptr_t)update.hwnd) + " style child";
 
     if (mciSendStringA(cmd.c_str(), NULL, 0, NULL) != 0) return;
 
     std::string posCmd = "put " + object.alias + " window at " +
-                         std::to_string(object.x) + " " + std::to_string(object.y) + " " +
+                         std::to_string(screenX) + " " + std::to_string(screenY) + " " +
                          std::to_string(object.width) + " " + std::to_string(object.height);
 
     mciSendStringA(posCmd.c_str(), NULL, 0, NULL);
