@@ -264,7 +264,7 @@ void Update() {
 ```void PlaySound(sound &object);``` - проигрывает заданный звук **один раз до конца**.  
 ```void PlayLoopSound(sound &object);``` - **зацикленно проигрывает** заданный звук до конца.  
 ```void StopSound(sound &object);``` - останавливает проигрывание заданного звука и **удаляет его**.  
-```void StopAllSounds();``` - останавливает проигрывание всех звуков и **удаляет все звуки**.  
+```void StopAllSounds();``` - останавливает проигрывание всех звуков и **удаляет все звуки(и видео)**.  
 ```void PauseSound(const sound &object);``` - останавливает проигрывание заданного звука и **не удаляет его**.  
 ```void ResumeSound(const sound &object);``` - возобновляет проигрывание заданного звука.  
 ```void SetSoundVolume(const sound& object, int volume);``` - устанавливает **громкость** заданного звука на заданное значение **(от 0 до 1000)**.  
@@ -316,7 +316,7 @@ void Update() {
 ```void LoadVideo(window& update, video& object);``` - загружает заданное видео в заданное окно.  
 ```void PlayVideo(const video& object);``` - проигрывает заданное видео **один раз до конца**.  
 ```void CloseVideo(video& object);``` - останавливает проигрывание заданного видео и **удаляет его**.  
-```void CloseAllVideos();``` - останавливает проигрывание всех видео и **удаляет все видео**.  
+```void CloseAllVideos();``` - останавливает проигрывание всех видео и **удаляет все видео(и звуки)**.  
 ```void PauseVideo(const video& object);``` - останавливает прогрывание заданного видео и **не удаляет его**.  
 ```void ResumeVideo(const video& object);``` - возобновляет проигрывание заданного видео.  
 ```void SetVideoVolume(const video& object, int volume);``` - устанавливает **громкость** заданного видео на заданное значение **(от 0 до 100)**.   
