@@ -464,17 +464,11 @@ std::string toText(bool variable) {
 bool IsCollide(square &objectA, square &objectB) {
     if (!objectA.active || !objectB.active) return 0;
 
-    float screenXA = objectA.x - cameraX;
-    float screenYA = objectA.y - cameraY;
+    float aLeft = objectA.x - (objectA.width / 2.0f);
+    float aTop  = objectA.y - (objectA.height / 2.0f);
 
-    float screenXB = objectB.x - cameraX;
-    float screenYB = objectB.y - cameraY;
-
-    float aLeft = screenXA - (objectA.width / 2.0f);
-    float aTop  = screenYA - (objectA.height / 2.0f);
-
-    float bLeft = screenXB - (objectB.width / 2.0f);
-    float bTop  = screenYB - (objectB.height / 2.0f);
+    float bLeft = objectB.x - (objectB.width / 2.0f);
+    float bTop  = objectB.y - (objectB.height / 2.0f);
 
     return (aLeft < bLeft + objectB.width &&
             aLeft + objectA.width > bLeft &&
