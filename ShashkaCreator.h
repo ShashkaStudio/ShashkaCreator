@@ -214,8 +214,8 @@ struct message {
 };
 
 struct inputfield {
-    square& box;
-    text& label;
+    square box;
+    text label;
     std::string content;
     int maxChars = 20;
     bool isFocused = false;
@@ -230,8 +230,8 @@ struct video {
 };
 
 struct scrollbar {
-    square& box;
-    square& slider;
+    square box;
+    square slider;
     int direction;
     bool isDragged;
     float filled = 0.0f;
